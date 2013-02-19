@@ -22,7 +22,7 @@ public class JsonServletTempo extends HttpServlet{
     String lat=req.getParameter("lat");
     String lng=req.getParameter("lng");
     String data=req.getParameter("data");
-    String result=verifyCache(lat,lng,data);
+    String result=getTempo(lat,lng,data);
     PrintWriter out = resp.getWriter();
     out.write(result);
     out.close();
@@ -34,7 +34,7 @@ public class JsonServletTempo extends HttpServlet{
     resp.setHeader("Access-Control-Allow-Methods", "GET");
   }
   
-  String verifyCache(String lat, String lng, String data){
+  String getTempo(String lat, String lng, String data){
     String result;
     MemcacheService cache = MemcacheServiceFactory.getMemcacheService();
     cache.setErrorHandler(ErrorHandlers.getConsistentLogAndContinue(Level.INFO));
@@ -47,9 +47,25 @@ public class JsonServletTempo extends HttpServlet{
     return result;
   }
   
-  String parseData(String content, String data){
+  DataJSON parse(String content){
     Gson gson = new Gson();
-    Map map = gson.fromJson(content);
+    return (DataJSON) gson.fromJson(content, DataJSON.class);
+  }
+  
+  String parseData(String content, String data){
+   DataJSON dataJson = parse(content);
+    Weather foundWeather=null;
+    for (Weather weather : dataJson.getData().getWeather()){
+      if(data.equals(weather.getDate())){
+        foundWeather=weather;
+        break;
+      }
+    }
+    Gson gson = new Gson();
+    if(foundWeather==null)
+      return gson.toJson(null);
+    else
+      return gson.toJson(foundWeather);
   }
   
   String executeGet(String targetURL){
