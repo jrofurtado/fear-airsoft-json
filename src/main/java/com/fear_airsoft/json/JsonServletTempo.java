@@ -22,29 +22,45 @@ public class JsonServletTempo extends HttpServlet{
     String lat=req.getParameter("lat");
     String lng=req.getParameter("lng");
     String data=req.getParameter("data");
-    String result=getTempo(lat,lng,data);
+    String result = getTempo(lat, lng, data);
     PrintWriter out = resp.getWriter();
     out.write(result);
     out.close();
   }
   
-   @Override
+  @Override
   protected void doOptions(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{ 
     resp.setHeader("Access-Control-Allow-Origin", "*");
     resp.setHeader("Access-Control-Allow-Methods", "GET");
   }
   
   String getTempo(String lat, String lng, String data){
-    String result;
-    MemcacheService cache = MemcacheServiceFactory.getMemcacheService();
-    cache.setErrorHandler(ErrorHandlers.getConsistentLogAndContinue(Level.INFO));
-    String key = lat+","+lng+","+data;
-    result = (String)cache.get(key);
+    MemcacheService cache = prepareCacheService();
+    String result=getTempoFromCache(lat,lng,data,cache);
     if(result==null){
       result=parseData(executeGet(tempoUrl+"&q="+lat+","+lng), data);
-      cache.put(key, result);
+      cache.put(getCacheKey(lat, lng, data), result, Expiration.byDeltaMillis(3600000));
     }
     return result;
+  }
+  
+  MemcacheService prepareCacheService(){
+    MemcacheService cache = MemcacheServiceFactory.getMemcacheService();
+    cache.setErrorHandler(ErrorHandlers.getConsistentLogAndContinue(Level.FINEST));
+    return cache;
+  }
+  
+  String getCacheKey(String lat, String lng, String data){
+    return lat+","+lng+","+data;
+  }
+  
+  String getTempoFromCache(String lat, String lng, String data, MemcacheService cache){
+    try{
+        String key = getCacheKey(lat, lng, data);
+        return (String)cache.get(key);
+    }catch(Throwable t){
+        return null;
+    }
   }
   
   DataJSON parse(String content){
@@ -55,8 +71,9 @@ public class JsonServletTempo extends HttpServlet{
   String parseData(String content, String data){
    DataJSON dataJson = parse(content);
     Weather foundWeather=null;
-    for (Weather weather : dataJson.getData().getWeather()){
-      if(data.equals(weather.getDate())){
+    for (Weather weather : (List<Weather>) dataJson.getData().getWeather()){
+      String weatherData = weather.getDate();
+      if(data.equals(weatherData)){
         foundWeather=weather;
         break;
       }
