@@ -14,7 +14,8 @@ public class JsonServletTempo extends HttpServlet{
   private static final Logger logger = Logger.getLogger(JsonServletTempo.class.getName());
   private static final String tempoUrl="http://free.worldweatheronline.com/feed/weather.ashx?format=json&num_of_days=5&key=795c730da3133229131502";
   
-  @Override
+ 
+ @Override
   public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
     resp.setHeader("Access-Control-Allow-Origin", "*");
     resp.setContentType("application/json");
@@ -46,7 +47,7 @@ public class JsonServletTempo extends HttpServlet{
   
   MemcacheService prepareCacheService(){
     MemcacheService cache = MemcacheServiceFactory.getMemcacheService();
-    cache.setErrorHandler(ErrorHandlers.getConsistentLogAndContinue(Level.FINEST));
+    cache.setErrorHandler(ErrorHandlers.getConsistentLogAndContinue(Level.FINER));
     return cache;
   }
   
@@ -55,12 +56,8 @@ public class JsonServletTempo extends HttpServlet{
   }
   
   String getTempoFromCache(String lat, String lng, String data, MemcacheService cache){
-    try{
-        String key = getCacheKey(lat, lng, data);
-        return (String)cache.get(key);
-    }catch(Throwable t){
-        return null;
-    }
+    String key = getCacheKey(lat, lng, data);
+    return (String)cache.get(key);
   }
   
   DataJSON parse(String content){
@@ -85,7 +82,8 @@ public class JsonServletTempo extends HttpServlet{
       return gson.toJson(foundWeather);
   }
   
-  String executeGet(String targetURL){
+  String executeGet(String targetURL)
+{
     URL url;
     HttpURLConnection connection = null;  
     try {
