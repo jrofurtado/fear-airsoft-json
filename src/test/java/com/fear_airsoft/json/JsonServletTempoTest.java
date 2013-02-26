@@ -30,18 +30,18 @@ public class JsonServletTempoTest extends TestCase {
     }
 
     public void testGetTempoFromCache() {
-        /*assertNull(servlet.getTempoFromCache("37.77", "-25.58", "2013-02-19",
-                cache));*/
+        assertNull(servlet.getTempoFromCache("37.77", "-25.58", "2013-02-19",
+                cache));
         String result = servlet.getTempo("37.77", "-25.58", "2013-02-19");
         assertNotNull(result);
         assertEquals(result, servlet.getTempoFromCache("37.77", "-25.58",
                 "2013-02-19", cache));
-        /*assertNull(servlet.getTempoFromCache("37.77", "-25.58", "2013-02-20",
+        assertNull(servlet.getTempoFromCache("37.77", "-25.58", "2013-02-20",
                 cache));
         assertNull(servlet.getTempoFromCache("37.77", "-25.50", "2013-02-19",
                 cache));
         assertNull(servlet.getTempoFromCache("37.70", "-25.58", "2013-02-19",
-                cache));*/
+                cache));
     }
 
     public void testParseDataFound() {

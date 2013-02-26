@@ -68,7 +68,8 @@ public class JsonServletTempo extends HttpServlet{
   String parseData(String content, String data){
    DataJSON dataJson = parse(content);
     Weather foundWeather=null;
-    for (Weather weather : (List<Weather>) dataJson.getData().getWeather()){
+    List<Weather> weatherList =  dataJson.getData().getWeather();
+    for (Weather weather : weatherList){
       String weatherData = weather.getDate();
       if(data.equals(weatherData)){
         foundWeather=weather;
