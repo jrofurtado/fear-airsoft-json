@@ -77,9 +77,9 @@ public class JsonServletTempo extends HttpServlet{
     }
     Gson gson = new Gson();
     if(foundWeather==null)
-      return gson.toJson(null);
+      return gson.toJson((Weather[]){null});
     else
-      return gson.toJson(foundWeather);
+      return gson.toJson((Weather[]){foundWeather});
   }
   
   String executeGet(String targetURL)
