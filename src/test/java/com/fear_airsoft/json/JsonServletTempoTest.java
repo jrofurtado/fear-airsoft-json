@@ -59,7 +59,7 @@ public class JsonServletTempoTest extends TestCase {
 
     public void testParseDataNotFound() {
         String jsonResult = servlet.parseData(jsonRest, "2013-02-18");
-        assertEquals(jsonResult, "null");
+        assertEquals(jsonResult, "[]");
     }
 
     public void testParse() {
