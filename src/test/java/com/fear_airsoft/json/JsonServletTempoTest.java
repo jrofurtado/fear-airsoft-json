@@ -47,7 +47,7 @@ public class JsonServletTempoTest extends TestCase {
     public void testParseDataFound() {
         String jsonResult = servlet.parseData(jsonRest, "2013-02-19");
         Gson gson = new Gson();
-        Weather[] weatherArray = gson.fromJson(jsonResult, Weather.class);
+        Weather[] weatherArray = gson.fromJson(jsonResult, Weather[].class);
         assertEquals(weatherArray.length, 1);
         Weather weather = weatherArray[0];
         assertEquals(weather.getPrecipMM(), "0.3");
