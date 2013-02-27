@@ -39,7 +39,7 @@ public class JsonServletPublishedData extends HttpServlet {
       connection = (HttpURLConnection)url.openConnection();
       connection.setRequestMethod("GET");
       connection.setUseCaches(true);
-      BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream(), Charset.forName("ISO-8859-1")));
+      BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream(), Charset.forName("UTF-8")));
       StringBuffer response = new StringBuffer();
       String inputLine;
       while((inputLine = in.readLine())!=null) 
