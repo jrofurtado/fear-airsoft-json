@@ -15,10 +15,10 @@ public class JsonServletTempoTest extends TestCase {
             new LocalMemcacheServiceTestConfig());
     static final String jsonRest = "{ \"data\": { \"current_condition\": [ {\"cloudcover\": \"50\", \"humidity\": \"94\", \"observation_time\": \"10:14 AM\", \"precipMM\": \"0.0\", \"pressure\": \"1013\", \"temp_C\": \"16\", \"temp_F\": \"61\", \"visibility\": \"10\", \"weatherCode\": \"116\",  \"weatherDesc\": [ {\"value\": \"Partly Cloudy\" } ],  \"weatherIconUrl\": [ {\"value\": \"http:\\/\\/www.worldweatheronline.com\\/images\\/wsymbols01_png_64\\/wsymbol_0002_sunny_intervals.png\" } ], \"winddir16Point\": \"W\", \"winddirDegree\": \"270\", \"windspeedKmph\": \"30\", \"windspeedMiles\": \"19\" } ],  \"request\": [ {\"query\": \"Lat 37.77 and Lon -25.58\", \"type\": \"LatLon\" } ],  \"weather\": [ {\"date\": \"2013-02-19\", \"precipMM\": \"0.3\", \"tempMaxC\": \"18\", \"tempMaxF\": \"64\", \"tempMinC\": \"16\", \"tempMinF\": \"60\", \"weatherCode\": \"119\",  \"weatherDesc\": [ {\"value\": \"Cloudy\" } ],  \"weatherIconUrl\": [ {\"value\": \"http:\\/\\/www.worldweatheronline.com\\/images\\/wsymbols01_png_64\\/wsymbol_0003_white_cloud.png\" } ], \"winddir16Point\": \"WSW\", \"winddirDegree\": \"257\", \"winddirection\": \"WSW\", \"windspeedKmph\": \"40\", \"windspeedMiles\": \"25\" }, {\"date\": \"2013-02-20\", \"precipMM\": \"5.7\", \"tempMaxC\": \"18\", \"tempMaxF\": \"65\", \"tempMinC\": \"15\", \"tempMinF\": \"58\", \"weatherCode\": \"113\",  \"weatherDesc\": [ {\"value\": \"Sunny\" } ],  \"weatherIconUrl\": [ {\"value\": \"http:\\/\\/www.worldweatheronline.com\\/images\\/wsymbols01_png_64\\/wsymbol_0001_sunny.png\" } ], \"winddir16Point\": \"WSW\", \"winddirDegree\": \"259\", \"winddirection\": \"WSW\", \"windspeedKmph\": \"66\", \"windspeedMiles\": \"41\" }, {\"date\": \"2013-02-21\", \"precipMM\": \"4.8\", \"tempMaxC\": \"16\", \"tempMaxF\": \"60\", \"tempMinC\": \"14\", \"tempMinF\": \"58\", \"weatherCode\": \"353\",  \"weatherDesc\": [ {\"value\": \"Light rain shower\" } ],  \"weatherIconUrl\": [ {\"value\": \"http:\\/\\/www.worldweatheronline.com\\/images\\/wsymbols01_png_64\\/wsymbol_0009_light_rain_showers.png\" } ], \"winddir16Point\": \"W\", \"winddirDegree\": \"269\", \"winddirection\": \"W\", \"windspeedKmph\": \"65\", \"windspeedMiles\": \"40\" }, {\"date\": \"2013-02-22\", \"precipMM\": \"0.5\", \"tempMaxC\": \"14\", \"tempMaxF\": \"57\", \"tempMinC\": \"13\", \"tempMinF\": \"56\", \"weatherCode\": \"113\",  \"weatherDesc\": [ {\"value\": \"Sunny\" } ],  \"weatherIconUrl\": [ {\"value\": \"http:\\/\\/www.worldweatheronline.com\\/images\\/wsymbols01_png_64\\/wsymbol_0001_sunny.png\" } ], \"winddir16Point\": \"WNW\", \"winddirDegree\": \"296\", \"winddirection\": \"WNW\", \"windspeedKmph\": \"49\", \"windspeedMiles\": \"30\" }, {\"date\": \"2013-02-23\", \"precipMM\": \"0.0\", \"tempMaxC\": \"15\", \"tempMaxF\": \"58\", \"tempMinC\": \"14\", \"tempMinF\": \"57\", \"weatherCode\": \"116\",  \"weatherDesc\": [ {\"value\": \"Partly Cloudy\" } ],  \"weatherIconUrl\": [ {\"value\": \"http:\\/\\/www.worldweatheronline.com\\/images\\/wsymbols01_png_64\\/wsymbol_0002_sunny_intervals.png\" } ], \"winddir16Point\": \"SSW\", \"winddirDegree\": \"199\", \"winddirection\": \"SSW\", \"windspeedKmph\": \"42\", \"windspeedMiles\": \"26\" } ] }}";
     MemcacheService cache;
-    JsonServletTempo servlet;
+    JsonServletJogo servlet;
 
     public void setUp() {
-        servlet = new JsonServletTempo();
+        servlet = new JsonServletJogo();
         cache = servlet.prepareCacheService();
         helper.setUp();
     }
@@ -65,7 +65,7 @@ public class JsonServletTempoTest extends TestCase {
     }
 
     public void testParse() {
-        DataJSON data = servlet.parse(jsonRest);
+        Tempo data = servlet.parse(jsonRest);
         List<Weather> lWeather = data.getData().getWeather();
         assertEquals(lWeather.size(), 5);
         Weather weather = lWeather.get(0);

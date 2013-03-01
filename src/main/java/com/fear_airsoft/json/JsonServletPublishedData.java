@@ -10,7 +10,7 @@ import java.nio.charset.Charset;
 public class JsonServletPublishedData extends HttpServlet {
   private static final long serialVersionUID = 1L;
   private static final Logger logger = Logger.getLogger(JsonServletPublishedData.class.getName());
-  private static final String publishedDataUrl="https://www.googledrive.com/host/0B4Nj2G61OMg-OGgtdXdGei1zR2M";
+  static final String publishedDataUrl="https://www.googledrive.com/host/0B4Nj2G61OMg-OGgtdXdGei1zR2M";
 
   @Override
   public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException{
