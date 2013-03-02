@@ -25,7 +25,7 @@ public class JsonServletJogo extends HttpServlet{
       Jogo jogo = jogos[0];
       jogo.tempo = getTempo(jogo.getCampo().getLat(), jogo.getCampo().getLng(), printDate(jogo.ano,jogo.mes,jogo.dia));
     }
-	String result = gson.toJson(jogos);
+	String result = new Gson().toJson(jogos);
     PrintWriter out = resp.getWriter();
     out.write(result);
     out.close();
@@ -35,6 +35,15 @@ public class JsonServletJogo extends HttpServlet{
   protected void doOptions(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{ 
     resp.setHeader("Access-Control-Allow-Origin", "*");
     resp.setHeader("Access-Control-Allow-Methods", "GET");
+  }
+  
+  String printDate(int ano, int mes, int dia){
+	  return ""+ano+"-"+print2digits(mes)+"-"+print2digits(dia);
+  }
+  
+  String print2digits(int num){
+	  String str = ""+num);
+	  return str.substring(str.length-2);
   }
   
   Jogo[] getJogo(){
