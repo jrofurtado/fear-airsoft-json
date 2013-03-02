@@ -23,8 +23,9 @@ public class JsonServletJogo extends HttpServlet{
     List<Jogo> jogos = getJogo();
     if(jogos!=null&&jogos.size()>0){
       Jogo jogo = jogos.get(0);
-      String result = getTempo(jogo.getCampo().getLat(), jogo.getCampo().getLng(), printDate(jogo.ano,jogo.mes,jogo.dia));
-    }  
+      jogo.tempo = getTempo(jogo.getCampo().getLat(), jogo.getCampo().getLng(), printDate(jogo.ano,jogo.mes,jogo.dia));
+    }
+	String result = gson.toJson(jogo);
     PrintWriter out = resp.getWriter();
     out.write(result);
     out.close();
@@ -40,14 +41,14 @@ public class JsonServletJogo extends HttpServlet{
      return parseJogo(executeGet(JsonServletPublishedData.publishedDataUrl+"jogo"));
   }
   
-  Jogo parseJogo(String content){
+  List<Jogo> parseJogo(String content){
      Gson gson = new Gson();
-     return (Jogo) gson.fromJson(content, Jogo.class);
+     return (List<Jogo>) gson.fromJson(content, List<Jogo>.class);
   }
   
-  String getTempo(String lat, String lng, String data){
+  Weather getTempo(String lat, String lng, String data){
     MemcacheService cache = prepareCacheService();
-    String result=getTempoFromCache(lat,lng,data,cache);
+    Weather result=getTempoFromCache(lat,lng,data,cache);
     if(result==null){
       result=parseTempoData(executeGet(tempoUrl+"&q="+lat+","+lng), data);
       cache.put(getTempoCacheKey(lat, lng, data), result, Expiration.byDeltaMillis(3600000));
@@ -65,9 +66,9 @@ public class JsonServletJogo extends HttpServlet{
     return lat+","+lng+","+data;
   }
   
-  String getTempoFromCache(String lat, String lng, String data, MemcacheService cache){
+  Weather getTempoFromCache(String lat, String lng, String data, MemcacheService cache){
     String key = getTempoCacheKey(lat, lng, data);
-    return (String)cache.get(key);
+    return (Weather)cache.get(key);
   }
   
   Tempo parseTempo(String content){
@@ -75,7 +76,7 @@ public class JsonServletJogo extends HttpServlet{
     return (Tempo) gson.fromJson(content, Tempo.class);
   }
   
-  String parseTempoData(String content, String data){
+  Weather parseTempoData(String content, String data){
    Tempo dataJson = parseTempo(content);
     Weather foundWeather=null;
     List<Weather> weatherList =  dataJson.getData().getWeather();
@@ -86,17 +87,10 @@ public class JsonServletJogo extends HttpServlet{
         break;
       }
     }
-    Gson gson = new Gson();
-    if(foundWeather==null){
-      return gson.toJson(new Weather[0]);
-    }else{
-      Weather[] weatherArray = new Weather[1];
-      weatherArray[0] = foundWeather;
-      return gson.toJson(weatherArray);
-    }
+	return foundWeather;
   }
   
-  String executeGet(String targetURL){
+  String executeGet(String targetURL){
     URL url;
     HttpURLConnection connection = null;  
     try {
