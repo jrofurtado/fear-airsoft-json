@@ -20,12 +20,12 @@ public class JsonServletJogo extends HttpServlet{
     resp.setHeader("Access-Control-Allow-Origin", "*");
     resp.setContentType("application/json");
     resp.setCharacterEncoding("UTF-8");
-    List<Jogo> jogos = getJogo();
-    if(jogos!=null&&jogos.size()>0){
-      Jogo jogo = jogos.get(0);
+    Jogo[] jogos = getJogo();
+    if(jogos!=null&&jogos.length>0){
+      Jogo jogo = jogos[0];
       jogo.tempo = getTempo(jogo.getCampo().getLat(), jogo.getCampo().getLng(), printDate(jogo.ano,jogo.mes,jogo.dia));
     }
-	String result = gson.toJson(jogo);
+	String result = gson.toJson(jogos);
     PrintWriter out = resp.getWriter();
     out.write(result);
     out.close();
@@ -37,13 +37,13 @@ public class JsonServletJogo extends HttpServlet{
     resp.setHeader("Access-Control-Allow-Methods", "GET");
   }
   
-  List<Jogo> getJogo(){
+  Jogo[] getJogo(){
      return parseJogo(executeGet(JsonServletPublishedData.publishedDataUrl+"jogo"));
   }
   
-  List<Jogo> parseJogo(String content){
+  Jogo[] parseJogo(String content){
      Gson gson = new Gson();
-     return (List<Jogo>) gson.fromJson(content, List<Jogo>.class);
+     return (Jogo[]) gson.fromJson(content, Jogo[].class);
   }
   
   Weather getTempo(String lat, String lng, String data){
