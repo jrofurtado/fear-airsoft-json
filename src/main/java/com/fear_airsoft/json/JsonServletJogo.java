@@ -42,7 +42,7 @@ public class JsonServletJogo extends HttpServlet{
   }
   
   String print2digits(int num){
-	  String str = ""+num);
+	  String str = ""+num;
 	  return str.substring(str.length-2);
   }
   
