@@ -43,7 +43,7 @@ public class JsonServletJogo extends HttpServlet{
   
   String print2digits(int num){
 	  String str = ""+num;
-	  return str.substring(str.length-2);
+	  return str.substring(str.length()-2);
   }
   
   Jogo[] getJogo(){
@@ -55,7 +55,7 @@ public class JsonServletJogo extends HttpServlet{
      return (Jogo[]) gson.fromJson(content, Jogo[].class);
   }
   
-  Weather getTempo(String lat, String lng, String data){
+  Weather getTempo(double lat, double lng, String data){
     MemcacheService cache = prepareCacheService();
     Weather result=getTempoFromCache(lat,lng,data,cache);
     if(result==null){
