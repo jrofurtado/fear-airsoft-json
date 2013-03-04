@@ -63,13 +63,18 @@ public class JsonServletJogo extends HttpServlet{
   }
   
   Weather getWeather(String lat, String lng, String data){
-  System.out.println(">>>>>>>>>>>>>>>>>>>>>"+lat+";"+lng+";"+data);
+  System.out.println("1>>>>>>>>>>>>>>>>>>>>"+lat+";"+lng+";"+data);
     MemcacheService cache = prepareCacheService();
     Weather result=getWeatherFromCache(lat,lng,data,cache);
     if(result==null){
-      result=parseWeatherData(executeGet(tempoUrl+"&q="+lat+","+lng), data);
+      System.out.println("2>>>>>>>>>>>>>>>>>>>>result=null na chache");
+      String json=executeGet(tempoUrl+"&q="+lat+","+lng);
+      System.out.println("3>>>>>>>>>>>>>>>>>>>>json="+json);
+      result=parseWeatherData(json, data);
+      System.out.println("4>>>>>>>>>>>>>>>>>>>>result="+result);
       cache.put(getWeatherCacheKey(lat, lng, data), result, Expiration.byDeltaMillis(3600000));
     }
+    System.out.println("5>>>>>>>>>>>>>>>>>>>>result="+result);
     return result;
   }
 
