@@ -30,7 +30,6 @@ public class JsonServletJogo extends HttpServlet{
       fourDec.setGroupingUsed(false);
       String lat = fourDec.format(jogo.getCampo().getLat());
       String lng = fourDec.format(jogo.getCampo().getLng());
-      System.out.println(lat+";"+lng);
       jogo.setTempo(getWeather(lat, lng, printDate(jogo.ano,jogo.mes,jogo.dia)));
     }
     String result = new Gson().toJson(jogos);
@@ -64,6 +63,7 @@ public class JsonServletJogo extends HttpServlet{
   }
   
   Weather getWeather(String lat, String lng, String data){
+  System.out.println(">>>>>>>>>>>>>>>>>>>>>"+lat+";"+lng+";"+data);
     MemcacheService cache = prepareCacheService();
     Weather result=getWeatherFromCache(lat,lng,data,cache);
     if(result==null){
