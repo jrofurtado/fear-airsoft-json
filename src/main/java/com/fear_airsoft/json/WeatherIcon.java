@@ -10,9 +10,8 @@ class WeatherIcon implements Serializable{
     }
     
     public String toString() {
-        return ("<"+this.getClass().getName()+":value="value+">");
+        return "<"+this.getClass().getName()+":value="+value+">";
     }
-
 
     public String getValue() {
         return value;

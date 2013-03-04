@@ -21,7 +21,7 @@ class Weather implements Serializable{
     }
     
     public String toString() {
-        String str = ("<"+this.getClass().getName()+":");
+        String str = "<"+this.getClass().getName()+":";
         str+="date="+date;
         str+="precipMM="+precipMM;
         str+="tempMaxC="+tempMaxC;
