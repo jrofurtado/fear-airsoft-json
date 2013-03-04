@@ -53,8 +53,8 @@ public class JsonServletTempoTest extends TestCase {
                 cache));
         Weather result = servlet.getWeather("37.77", "-25.58", "2013-02-19");
         assertNotNull(result);
-        assertEquals(result, servlet.getWeatherFromCache("37.77", "-25.58",
-                "2013-02-19", cache));
+        assertEquals(result.toString(), servlet.getWeatherFromCache("37.77", "-25.58",
+                "2013-02-19".toString(), cache));
         assertNull(servlet.getWeatherFromCache("37.77", "-25.58", "2013-02-20",
                 cache));
         assertNull(servlet.getWeatherFromCache("37.77", "-25.50", "2013-02-19",
