@@ -26,9 +26,14 @@ public class JsonServletJogo extends HttpServlet{
     Jogo[] jogos = getJogo();
     if(jogos!=null&&jogos.length>0){
       Jogo jogo = jogos[0];
-      jogo.setTempo(getWeather(jogo.getCampo().getLat(), jogo.getCampo().getLng(), printDate(jogo.ano,jogo.mes,jogo.dia)));
+      DecimalFormat fourDec = new DecimalFormat("0.0000", new DecimalFormatSymbols(Locale.US));
+      fourDec.setGroupingUsed(false);
+      String lat = fourDec.format(jogo.getCampo().getLat());
+      String lng = fourDec.format(jogo.getCampo().getLng());
+      System.out.println(lat+";"+lng);
+      jogo.setTempo(getWeather(lat, lng, printDate(jogo.ano,jogo.mes,jogo.dia)));
     }
-  String result = new Gson().toJson(jogos);
+    String result = new Gson().toJson(jogos);
     PrintWriter out = resp.getWriter();
     out.write(result);
     out.close();
@@ -58,13 +63,11 @@ public class JsonServletJogo extends HttpServlet{
      return (Jogo[]) gson.fromJson(content, Jogo[].class);
   }
   
-  Weather getWeather(double lat, double lng, String data){
+  Weather getWeather(String lat, String lng, String data){
     MemcacheService cache = prepareCacheService();
     Weather result=getWeatherFromCache(lat,lng,data,cache);
     if(result==null){
-      DecimalFormat fourDec = new DecimalFormat("0.0000", new DecimalFormatSymbols(Locale.US));
-      fourDec.setGroupingUsed(false);
-      result=parseWeatherData(executeGet(tempoUrl+"&q="+fourDec.format(lat)+","+fourDec.format(lng)), data);
+      result=parseWeatherData(executeGet(tempoUrl+"&q="+lat+","+lng), data);
       cache.put(getWeatherCacheKey(lat, lng, data), result, Expiration.byDeltaMillis(3600000));
     }
     return result;
@@ -76,11 +79,11 @@ public class JsonServletJogo extends HttpServlet{
     return cache;
   }
   
-  String getWeatherCacheKey(double lat, double lng, String data){
+  String getWeatherCacheKey(String lat, String lng, String data){
     return lat+","+lng+","+data;
   }
   
-  Weather getWeatherFromCache(double lat, double lng, String data, MemcacheService cache){
+  Weather getWeatherFromCache(String lat, String lng, String data, MemcacheService cache){
     String key = getWeatherCacheKey(lat, lng, data);
     return (Weather)cache.get(key);
   }
