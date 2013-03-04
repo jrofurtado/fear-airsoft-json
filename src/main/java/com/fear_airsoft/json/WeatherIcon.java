@@ -1,6 +1,8 @@
 package com.fear_airsoft.json;
 
-class WeatherIcon {
+import java.io.Serializable;
+
+class WeatherIcon implements Serializable{
     private String value;
 
     public String getValue() {

@@ -1,8 +1,9 @@
 package com.fear_airsoft.json;
 
+import java.io.Serializable;
 import java.util.List;
 
-class Weather {
+class Weather implements Serializable{
     private String date;
     private String precipMM;
     private String tempMaxC;

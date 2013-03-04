@@ -1,8 +1,9 @@
 package com.fear_airsoft.json;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Tempo {
+public class Tempo implements Serializable{
     private Info data;
 
     public Info getData() {
