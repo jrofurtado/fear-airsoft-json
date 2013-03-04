@@ -12,6 +12,15 @@ class Weather implements Serializable{
     private String windspeedKmph;
 
     public boolean equals(Weather other) {
+    System.out.println( date.equals(other.date));
+    System.out.println(precipMM.equals(other.precipMM));
+    System.out.println(tempMinC.equals(other.tempMinC));
+    System.out.println(tempMaxC.equals(other.tempMaxC));
+    System.out.println(weatherIconUrl.equals(other.weatherIconUrl));
+    System.out.println(windspeedKmph.equals(other.windspeedKmph));
+    
+    
+    
         return date.equals(other.date)
             && precipMM.equals(other.precipMM)
             && tempMinC.equals(other.tempMinC)
