@@ -6,6 +6,9 @@ import javax.servlet.http.*;
 import java.util.logging.*;
 import java.io.*;
 import java.net.*;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+
 import com.google.appengine.api.memcache.*;
 import com.google.gson.Gson;
 
@@ -23,9 +26,9 @@ public class JsonServletJogo extends HttpServlet{
     Jogo[] jogos = getJogo();
     if(jogos!=null&&jogos.length>0){
       Jogo jogo = jogos[0];
-      jogo.tempo = getTempo(jogo.getCampo().getLat(), jogo.getCampo().getLng(), printDate(jogo.ano,jogo.mes,jogo.dia));
+      jogo.setTempo(getWeather(jogo.getCampo().getLat(), jogo.getCampo().getLng(), printDate(jogo.ano,jogo.mes,jogo.dia)));
     }
-	String result = new Gson().toJson(jogos);
+  String result = new Gson().toJson(jogos);
     PrintWriter out = resp.getWriter();
     out.write(result);
     out.close();
@@ -38,12 +41,12 @@ public class JsonServletJogo extends HttpServlet{
   }
   
   String printDate(int ano, int mes, int dia){
-	  return ""+ano+"-"+print2digits(mes)+"-"+print2digits(dia);
+    return ""+ano+"-"+print2digits(mes)+"-"+print2digits(dia);
   }
   
   String print2digits(int num){
-	  String str = ""+num;
-	  return str.substring(str.length()-2);
+    String str = ""+num;
+    return str.substring(str.length()-2);
   }
   
   Jogo[] getJogo(){
@@ -55,28 +58,30 @@ public class JsonServletJogo extends HttpServlet{
      return (Jogo[]) gson.fromJson(content, Jogo[].class);
   }
   
-  Weather getTempo(double lat, double lng, String data){
+  Weather getWeather(double lat, double lng, String data){
     MemcacheService cache = prepareCacheService();
-    Weather result=getTempoFromCache(lat,lng,data,cache);
+    Weather result=getWeatherFromCache(lat,lng,data,cache);
     if(result==null){
-      result=parseTempoData(executeGet(tempoUrl+"&q="+lat+","+lng), data);
-      cache.put(getTempoCacheKey(lat, lng, data), result, Expiration.byDeltaMillis(3600000));
+      DecimalFormat fourDec = new DecimalFormat("0.0000", new DecimalFormatSymbols(Locale.US));
+      fourDec.setGroupingUsed(false);
+      result=parseWeatherData(executeGet(tempoUrl+"&q="+fourDec.format(lat)+","+fourDec.format(lng)), data);
+      cache.put(getWeatherCacheKey(lat, lng, data), result, Expiration.byDeltaMillis(3600000));
     }
     return result;
   }
-  
+
   MemcacheService prepareCacheService(){
     MemcacheService cache = MemcacheServiceFactory.getMemcacheService();
     cache.setErrorHandler(ErrorHandlers.getConsistentLogAndContinue(Level.FINER));
     return cache;
   }
   
-  String getTempoCacheKey(String lat, String lng, String data){
+  String getWeatherCacheKey(double lat, double lng, String data){
     return lat+","+lng+","+data;
   }
   
-  Weather getTempoFromCache(String lat, String lng, String data, MemcacheService cache){
-    String key = getTempoCacheKey(lat, lng, data);
+  Weather getWeatherFromCache(double lat, double lng, String data, MemcacheService cache){
+    String key = getWeatherCacheKey(lat, lng, data);
     return (Weather)cache.get(key);
   }
   
@@ -85,10 +90,10 @@ public class JsonServletJogo extends HttpServlet{
     return (Tempo) gson.fromJson(content, Tempo.class);
   }
   
-  Weather parseTempoData(String content, String data){
-   Tempo dataJson = parseTempo(content);
+  Weather parseWeatherData(String content, String data){
+   Tempo tempo = parseTempo(content);
     Weather foundWeather=null;
-    List<Weather> weatherList =  dataJson.getData().getWeather();
+    List<Weather> weatherList =  tempo.getData().getWeather();
     for (Weather weather : weatherList){
       String weatherData = weather.getDate();
       if(data.equals(weatherData)){
@@ -96,7 +101,7 @@ public class JsonServletJogo extends HttpServlet{
         break;
       }
     }
-	return foundWeather;
+    return foundWeather;
   }
   
   String executeGet(String targetURL){

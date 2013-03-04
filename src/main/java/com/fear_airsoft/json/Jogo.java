@@ -12,7 +12,15 @@ public class Jogo {
     int minutosFim;
     String descricao;
     Campo campo;
-    Tempo tempo;
+    Weather tempo;
+    
+    public Weather getTempo() {
+        return tempo;
+    }
+
+    public void setTempo(Weather tempo) {
+        this.tempo = tempo;
+    }
 
     public int getAno() {
         return ano;
