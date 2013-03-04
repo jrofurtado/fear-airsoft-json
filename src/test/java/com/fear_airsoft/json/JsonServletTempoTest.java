@@ -17,8 +17,15 @@ public class JsonServletTempoTest extends TestCase {
     MemcacheService cache;
     JsonServletJogo servlet;
 
+    class MockJsonClient extends JsonClient {
+       String executeGet(String targetURL){
+         return jsonTempoStr;
+       }
+    }
+
     public void setUp() {
         servlet = new JsonServletJogo();
+        servlet.setJsonClient(new MockJsonClient());
         cache = servlet.prepareCacheService();
         helper.setUp();
     }

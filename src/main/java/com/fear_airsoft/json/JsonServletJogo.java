@@ -1,11 +1,15 @@
 package com.fear_airsoft.json;
 
-import java.util.*;
-import javax.servlet.*;
-import javax.servlet.http.*;
-import java.util.logging.*;
-import java.io.*;
-import java.net.*;
+import java.util.List;
+import java.util.Locale;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.logging.Logger;
+import java.util.logging.Level;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 
@@ -16,8 +20,16 @@ public class JsonServletJogo extends HttpServlet{
   private static final long serialVersionUID = 1L;
   private static final Logger logger = Logger.getLogger(JsonServletJogo.class.getName());
   private static final String tempoUrl="http://free.worldweatheronline.com/feed/weather.ashx?format=json&num_of_days=5&key=795c730da3133229131502";
-  
- 
+  private JsonClient jsonClient = new JsonClient();
+
+  public JsonClient getJsonClient() {
+    return jsonClient;
+  }
+
+  public void setJsonClient(JsonClient jsonClient) {
+    this.jsonClient = jsonClient;
+  }
+
  @Override
   public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
     resp.setHeader("Access-Control-Allow-Origin", "*");
@@ -54,7 +66,7 @@ public class JsonServletJogo extends HttpServlet{
   }
   
   Jogo[] getJogo(){
-     return parseJogo(executeGet(JsonServletPublishedData.publishedDataUrl+"jogo"));
+     return parseJogo(jsonClient.executeGet(JsonServletPublishedData.publishedDataUrl+"jogo"));
   }
   
   Jogo[] parseJogo(String content){
@@ -63,18 +75,13 @@ public class JsonServletJogo extends HttpServlet{
   }
   
   Weather getWeather(String lat, String lng, String data){
-  System.out.println("1>>>>>>>>>>>>>>>>>>>>"+lat+";"+lng+";"+data);
     MemcacheService cache = prepareCacheService();
     Weather result=getWeatherFromCache(lat,lng,data,cache);
     if(result==null){
-      System.out.println("2>>>>>>>>>>>>>>>>>>>>result=null na chache");
-      String json=executeGet(tempoUrl+"&q="+lat+","+lng);
-      System.out.println("3>>>>>>>>>>>>>>>>>>>>json="+json);
+      String json=jsonClient.executeGet(tempoUrl+"&q="+lat+","+lng);
       result=parseWeatherData(json, data);
-      System.out.println("4>>>>>>>>>>>>>>>>>>>>result="+result);
       cache.put(getWeatherCacheKey(lat, lng, data), result, Expiration.byDeltaMillis(3600000));
     }
-    System.out.println("5>>>>>>>>>>>>>>>>>>>>result="+result);
     return result;
   }
 
@@ -110,30 +117,5 @@ public class JsonServletJogo extends HttpServlet{
       }
     }
     return foundWeather;
-  }
-  
-  String executeGet(String targetURL){
-    URL url;
-    HttpURLConnection connection = null;  
-    try {
-      url = new URL(targetURL);
-      connection = (HttpURLConnection)url.openConnection();
-      connection.setRequestMethod("GET");
-      connection.setUseCaches(true);
-      BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-      StringBuffer response = new StringBuffer();
-      String inputLine;
-      while((inputLine = in.readLine())!=null) 
-        response.append(inputLine);
-      in.close();
-      return response.toString();
-    } catch (Exception e) {
-      logger.throwing(JsonServletJogo.class.getName(),"executeGet",e);
-      return null;
-    } finally {
-      if(connection != null) {
-        connection.disconnect(); 
-      }
-    }
   }
 }
