@@ -28,6 +28,18 @@ public class JsonServletTempoTest extends TestCase {
         servlet = null;
         helper.tearDown();
     }
+    
+    public void testPrint2digits(){
+        assertEquals(servlet.print2digits(0),"00");
+        assertEquals(servlet.print2digits(1),"01");
+        assertEquals(servlet.print2digits(12),"12");
+    }
+    
+    public void testPrintDate(){
+        assertEquals(servlet.printDate(1,2,2013),"2013-02-01");
+        assertEquals(servlet.printDate(1,12,2013),"2013-12-01");
+        assertEquals(servlet.printDate(31,12,2013),"2013-12-31");
+    }
 
     public void testGetWeatherFromCache() {
         assertNull(servlet.getWeatherFromCache(37.77, -25.58, "2013-02-19",

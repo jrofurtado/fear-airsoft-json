@@ -5,12 +5,12 @@
   version="2.5">
   <servlet>
     <servlet-name>tempo</servlet-name>
-    <servlet-class>com.fear_airsoft.json.JsonServletTempo</servlet-class>
+    <servlet-class>com.fear_airsoft.json.JsonServletJogo</servlet-class>
     <load-on-startup>1</load-on-startup>
   </servlet>
   <servlet-mapping>
-    <servlet-name>tempo</servlet-name>
-    <url-pattern>/json/tempo/*</url-pattern>
+    <servlet-name>jogo</servlet-name>
+    <url-pattern>/jogo/*</url-pattern>
   </servlet-mapping>
   <servlet>
     <servlet-name>publishedData</servlet-name>
@@ -19,6 +19,6 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>publishedData</servlet-name>
-    <url-pattern>/json/publishedData/*</url-pattern>
+    <url-pattern>/publicado/*</url-pattern>
   </servlet-mapping>
 </web-app>
