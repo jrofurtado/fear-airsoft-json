@@ -19,6 +19,19 @@ class Weather implements Serializable{
             && weatherIconUrl.equals(other.weatherIconUrl)
             && windspeedKmph.equals(other.windspeedKmph);
     }
+    
+    public String toString() {
+        String str = ("<"+this.getClass().getName()+":");
+        str+="date="+date;
+        str+="precipMM="+precipMM;
+        str+="tempMaxC="+tempMaxC;
+        str+="tempMinC="+tempMinC;
+        str+="weatherIconUrl="+weatherIconUrl;
+        str+="windspeedKmph="+windspeedKmph;
+        str+=">";
+        return str;
+    }
+
 
     public String getDate() {
         return date;

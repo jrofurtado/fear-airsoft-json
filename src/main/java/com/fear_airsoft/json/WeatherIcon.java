@@ -8,6 +8,11 @@ class WeatherIcon implements Serializable{
     public boolean equals(WeatherIcon other) {
         return value.equals(other.value);
     }
+    
+    public String toString() {
+        return ("<"+this.getClass().getName()+":value="value+">");
+    }
+
 
     public String getValue() {
         return value;
