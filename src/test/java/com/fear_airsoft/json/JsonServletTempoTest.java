@@ -36,9 +36,9 @@ public class JsonServletTempoTest extends TestCase {
     }
     
     public void testPrintDate(){
-        assertEquals(servlet.printDate(1,2,2013),"2013-02-01");
-        assertEquals(servlet.printDate(1,12,2013),"2013-12-01");
-        assertEquals(servlet.printDate(31,12,2013),"2013-12-31");
+        assertEquals(servlet.printDate(2013,2,1),"2013-02-01");
+        assertEquals(servlet.printDate(2013,12,1),"2013-12-01");
+        assertEquals(servlet.printDate(2013,12,31),"2013-12-31");
     }
 
     public void testGetWeatherFromCache() {
