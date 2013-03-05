@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<web-app xmlns="http://java.sun.com/xml/ns/javaee"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+  version="2.5">
+  <servlet>
+    <servlet-name>tempo</servlet-name>
+    <servlet-class>com.fear_airsoft.json.JsonServletJogo</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>jogo</servlet-name>
+    <url-pattern>/jogo/*</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>publishedData</servlet-name>
+    <servlet-class>com.fear_airsoft.json.JsonServletPublishedData</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>publishedData</servlet-name>
+    <url-pattern>/publicado/*</url-pattern>
+  </servlet-mapping>
+</web-app>
