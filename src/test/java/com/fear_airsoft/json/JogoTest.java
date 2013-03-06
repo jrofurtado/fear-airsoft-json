@@ -42,7 +42,7 @@ public class JogoTest extends TestCase {
     }
     
     public void testJsonFilledWithFotos() {
-        Jogo[] jogos = gson.fromJson(jsonFilled, Jogo[].class);
+        Jogo[] jogos = gson.fromJson(jsonFilledWithFotos, Jogo[].class);
         assertEquals(jogos.length, 1);
         Jogo jogo = jogos[0];
         assertEquals(jogo.getCampo().getFoto().size(), 2);
