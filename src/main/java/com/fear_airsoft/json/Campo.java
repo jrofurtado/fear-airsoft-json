@@ -5,9 +5,9 @@ import java.util.List;
 public class Campo {
     String id;
     String nome;
-    String morada;
-    double estacionamentoLng;
+    String morada;    
     double lng;
+    double estacionamentoLng;
     double lat;
     double estacionamentoLat;
     List<String> foto;
