@@ -10,7 +10,7 @@ public class Campo {
     double lng;
     double lat;
     double estacionamentoLat;
-    List<String> fotoUrl;
+    List<String> foto;
 
     public double getEstacionamentoLat() {
         return estacionamentoLat;
@@ -28,12 +28,12 @@ public class Campo {
         this.estacionamentoLng = estacionamentoLng;
     }
 
-    public List<String> getFotoUrl() {
-        return fotoUrl;
+    public List<String> getFoto() {
+        return foto;
     }
 
-    public void setFotoUrl(List<String> fotoUrl) {
-        this.fotoUrl = fotoUrl;
+    public void setFoto(List<String> foto) {
+        this.foto = foto;
     }
 
     public String getId() {

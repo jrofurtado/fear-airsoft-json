@@ -4,7 +4,7 @@
   xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
   version="2.5">
   <servlet>
-    <servlet-name>tempo</servlet-name>
+    <servlet-name>jogo</servlet-name>
     <servlet-class>com.fear_airsoft.json.JsonServletJogo</servlet-class>
     <load-on-startup>1</load-on-startup>
   </servlet>
