@@ -1,5 +1,6 @@
 package com.fear_airsoft.json;
 
+import java.net.HttpURLConnection;
 import java.util.List;
 import junit.framework.Test;
 import junit.framework.TestCase;
@@ -17,8 +18,12 @@ public class JsonServletJogoTest extends TestCase {
     MemcacheService cache;
     JsonServletJogo servlet;
 
-    class MockJsonClient extends JsonClient {
-       String executeGet(String targetURL){
+    class MockJsonClient extends JsonClient {    
+       HttpURLConnection prepareCall(String targetURL){
+         return null;
+       }
+       
+       String getResponseAndClose(HttpURLConnection connection, String encoding){
          return jsonTempoStr;
        }
     }
@@ -51,7 +56,7 @@ public class JsonServletJogoTest extends TestCase {
     public void testGetWeatherFromCache() {
         assertNull(servlet.getWeatherFromCache("37.77", "-25.58", "2013-02-19",
                 cache));
-        Weather result = servlet.getWeather("37.77", "-25.58", "2013-02-19");
+        Weather result = servlet.getWeather("37.77", "-25.58", "2013-02-19", cache);
         assertNotNull(result);
         assertEquals(result.toString(), servlet.getWeatherFromCache("37.77", "-25.58",
                 "2013-02-19", cache).toString());

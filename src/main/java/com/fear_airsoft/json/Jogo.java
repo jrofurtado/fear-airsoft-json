@@ -1,5 +1,7 @@
 package com.fear_airsoft.json;
 
+import java.util.List;
+
 public class Jogo {
     String id;
     String nome;
@@ -13,7 +15,16 @@ public class Jogo {
     String descricao;
     Campo campo;
     Weather tempo;
+    List<Participante> participantes;
     
+    public List<Participante> getParticipantes() {
+        return participantes;
+    }
+
+    public void setParticipantes(List<Participante> participantes) {
+        this.participantes = participantes;
+    }
+
     public Weather getTempo() {
         return tempo;
     }

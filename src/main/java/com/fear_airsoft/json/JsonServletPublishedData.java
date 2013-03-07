@@ -20,7 +20,7 @@ public class JsonServletPublishedData extends HttpServlet {
     resp.setContentType("application/json");
     resp.setCharacterEncoding("UTF-8");
     String service=req.getPathInfo();
-    String result=jsonClient.executeGet(publishedDataUrl+service);
+    String result=jsonClient.getResponseAndClose(jsonClient.prepareCall(publishedDataUrl+service), "UTF-8");
     PrintWriter out = resp.getWriter();
     out.write(result);
     out.close();

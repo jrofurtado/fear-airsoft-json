@@ -3,7 +3,7 @@ package com.fear_airsoft.json;
 import java.io.Serializable;
 import java.util.List;
 
-public class Tempo implements Serializable{
+public class Tempo implements Serializable {
     private Info data;
 
     public Info getData() {
@@ -13,16 +13,16 @@ public class Tempo implements Serializable{
     public void setData(Info data) {
         this.data = data;
     }
+}
 
-    class Info {
-        private List<Weather> weather;
+class Info {
+    private List<Weather> weather;
 
-        public List<Weather> getWeather() {
-            return weather;
-        }
+    public List<Weather> getWeather() {
+        return weather;
+    }
 
-        public void setWeather(List<Weather> weather) {
-            this.weather = weather;
-        }
+    public void setWeather(List<Weather> weather) {
+        this.weather = weather;
     }
 }
